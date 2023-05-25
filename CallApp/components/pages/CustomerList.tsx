@@ -23,6 +23,7 @@ import {
   getTodosSelector,
 } from "../redux/selector";
 
+//display list of customers with their details and functionality to call a customer
 function CustomerList(): JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
 
@@ -30,7 +31,10 @@ function CustomerList(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  // dispatch action to redux store
   let dispatch = useDispatch();
+
+  //select the pending state, customers data, and error state from the Redux store
   const pending = useSelector(getPendingSelector);
   const customers = useSelector(getTodosSelector);
   const error = useSelector(getErrorSelector);
@@ -66,6 +70,7 @@ function CustomerList(): JSX.Element {
     setCustomerId('')
   }
 
+  // jsx markup
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
