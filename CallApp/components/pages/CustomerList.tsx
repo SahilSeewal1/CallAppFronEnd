@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import RadioButtonList from "../pages/RadioButtonList";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+// import * as Animatable from 'react-native-animatable';
 import {
   Alert,
   Button,
@@ -43,6 +45,7 @@ function CustomerList(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
   const [callScreenVisible, setCallScreenVisible] = useState(false);
   const [customerId, setCustomerId] = useState('');
+  const [selectedNumber, setSelectedNumber] = useState<string | null>(null);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -64,6 +67,11 @@ function CustomerList(): JSX.Element {
     setCustomerId(customerId.toString()) 
     }
   }
+
+  const onPressHandler2 = (contact: string | null, customerId: Number) => {
+    Alert.alert('Calling to customer !')
+  }
+
 
   const unsetCallScreenVisibility = ()=> {
     setCallScreenVisible(!callScreenVisible)
@@ -98,7 +106,7 @@ function CustomerList(): JSX.Element {
                   {customer.customerName}
                 </Text>
                 <TouchableOpacity style={style.button} onPress={() => onPressHandler(customer.customerContact, customer.customerId)}>
-                  <Text>Call</Text>
+                  <Text style={style.buttonText}>Call</Text>
                 </TouchableOpacity> 
                 <Modal
                   animationType="slide"
@@ -107,21 +115,22 @@ function CustomerList(): JSX.Element {
                   onRequestClose={unsetCallScreenVisibility}>
                       <Pressable style={style.centeredView} onPress={unsetCallScreenVisibility}>
                         <Pressable style={style.modalView}>
-                      <Text>Contact list of <Text style = {style.name}>{customer.customerName}</Text> </Text>
+                      <Text style = {style.name}>Contact list of <Text style = {style.name}>{customer.customerName}</Text> </Text>
                       {
-                        customer.customerContact.map((contact, index)=> (
-                          <View key={index++}>
-                          <Text>
-                            {contact}
-                          </Text>
-                          </View>
-                          
-                        ))
+                        <RadioButtonList
+                          options={customer.customerContact}
+                          selectedOption={selectedNumber}
+                          onOptionSelect={(option: string | null) => setSelectedNumber(option)}
+                        />  
                       }
+                      <TouchableOpacity style={style.button} onPress={() => onPressHandler2(selectedNumber, customer.customerId)}>
+                      <Text style={style.buttonText}>Call</Text>
+                      </TouchableOpacity> 
                       </Pressable>
                       </Pressable>
                 </Modal> 
                 </View>
+              // </Animatable.View>
               ))
               }
               </View>
