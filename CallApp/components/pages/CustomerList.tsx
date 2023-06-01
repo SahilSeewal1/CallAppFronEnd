@@ -80,7 +80,7 @@ function CustomerList({navigation}): JSX.Element {
           }       
     }
   }
-  }, [calling, call, error]);
+  }, [calling, call, callError]);
   
   const onPressHandler = (contacts: string[], customerId: Number) => {
     if(contacts.length == 1)
