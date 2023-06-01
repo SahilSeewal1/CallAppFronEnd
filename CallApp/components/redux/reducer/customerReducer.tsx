@@ -1,5 +1,5 @@
 import { GET_CUSTOMER, GET_CUSTOMER_FAILURE, GET_CUSTOMER_SUCCESS } from "../constants"
-import { CustomerActions, CustomerState } from "../types";
+import { CustomerActions, CustomerState } from "../type/customerType";
 
 const initialState: CustomerState = {
     pending: false,
@@ -7,7 +7,7 @@ const initialState: CustomerState = {
     error: null,
   };
 
-export const reducer = (state = initialState, action: CustomerActions) => {
+export const customerReducer = (state = initialState, action: CustomerActions) => {
     switch(action.type) {
         case GET_CUSTOMER:
             return {

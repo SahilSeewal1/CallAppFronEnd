@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
-import { reducer } from './reducer/customerReducer'
+import { customerReducer } from './reducer/customerReducer'
+import { callReducer } from './reducer/callReducer'
 
 const rootReducer = combineReducers({
-    cxReducer: reducer
+    cxReducer: customerReducer,
+    callReducer: callReducer
 })
 
 export type AppState = ReturnType<typeof rootReducer>

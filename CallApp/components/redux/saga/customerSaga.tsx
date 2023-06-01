@@ -1,8 +1,8 @@
-import { GET_CUSTOMER, GET_CUSTOMER_SUCCESS } from './constants'
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { GET_CUSTOMER, GET_CUSTOMER_SUCCESS } from '../constants'
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import axios from "axios";
-import { Customer } from './types';
-import { getCustomerFailure, getCustomerSuccess } from './action/customerAction';
+import { Customer } from '../type/customerType';
+import { getCustomerFailure, getCustomerSuccess } from '../action/customerAction';
 
 // const getCustomers = () =>
   // axios.get<Customer[]>("https://jsonplaceholder.typicode.com/todos")
@@ -57,8 +57,8 @@ function* getCustomerList(): any {
 }
 } 
 
-function* SagaData() {
-yield takeEvery(GET_CUSTOMER, getCustomerList)
+function* CustomerSagaData() {
+yield takeLatest(GET_CUSTOMER, getCustomerList)
 }
 
-export default SagaData
+export default CustomerSagaData

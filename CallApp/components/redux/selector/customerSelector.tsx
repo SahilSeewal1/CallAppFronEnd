@@ -1,5 +1,5 @@
 import { createSelector } from "reselect"
-import { AppState } from "./rootReducer"
+import { AppState } from "../rootReducer"
 
 const getPending = (state: AppState) => state.cxReducer.pending
 

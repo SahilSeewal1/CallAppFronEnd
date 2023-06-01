@@ -8,7 +8,7 @@ import {
     GetCustomerSuccessPayload,
     GetCustomerFailure,
     GetCustomerFailurePayload,
-  } from "../types";
+  } from "../type/customerType";
   
 
 export const getCustomerRequest = (): GetCustomerRequest => {

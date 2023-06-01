@@ -2,7 +2,7 @@ import {
     GET_CUSTOMER,
     GET_CUSTOMER_SUCCESS,
     GET_CUSTOMER_FAILURE
-} from './constants'
+} from '../constants'
 
 /*
 export interface Customer {
