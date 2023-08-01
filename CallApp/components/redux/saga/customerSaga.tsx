@@ -4,14 +4,14 @@ import axios from "axios";
 import { Customer } from '../type/customerType';
 import { getCustomerFailure, getCustomerSuccess } from '../action/customerAction';
 
-  const getCustomers = () =>
-  axios.get<Customer[]>("http://<localhost ip address>:8080/api/getAllCustomerDetails")
+// const getCustomers = () =>
+  // axios.get<Customer[]>("https://jsonplaceholder.typicode.com/todos")
 
 function* getCustomerList(): any {
     
     try{
-    let response = yield call(getCustomers)
-    /*let response = yield {
+    // let response = yield call(getCustomers)
+    let response = yield {
       data: [
         {
           customerId: 1,
@@ -33,14 +33,13 @@ function* getCustomerList(): any {
         }
       ]
     }
-    */
     yield put(
         getCustomerSuccess({
           customers: response.data,
         }))
     }
     catch (e) {
-        if(e instanceof Error)   
+        if(e instanceof Error)
         {
             yield put(
             getCustomerFailure({

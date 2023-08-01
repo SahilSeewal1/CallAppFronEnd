@@ -14,4 +14,10 @@ module.exports = {
       },
     }),
   },
+  resolver: {
+    sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs', 'json'], //add here
+    extraNodeModules: {
+      "#node-web-compat": `/Users/kmbl278202/Desktop/CallApp/node_modules/aws-jwt-verify/dist/cjs/node-web-compat-web.js`,
+    }
+  },
 };

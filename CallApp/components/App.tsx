@@ -1,42 +1,22 @@
-import React from 'react'
-import CustomerList from './pages/CustomerList';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'; 
-import CustomerCalled from './pages/CustomerCalled';
-import ErrorPage from './pages/ErrorPage';
 
-const Stack = createStackNavigator()
+import HomeScreen from './HomeScreen';
+import LoggedInHome from './LoggedInHome'; // Replace 'LoggedInHome' with your logged-in home screen component
 
-function App(): JSX.Element {
-  return(
+const Stack = createStackNavigator();
+
+const App = () => {
+  return (
     <NavigationContainer>
-      <Stack.Navigator
-      screenOptions={{
-        headerShown: true,
-        headerBackTitleVisible: false,
-      }}>
-        <Stack.Screen
-        name = 'Customer_List'
-        component = { CustomerList }
-        options={{header: ()=>null}}
-        />
-
-        <Stack.Screen
-        name = 'Customer_Called'
-        component = { CustomerCalled }
-        options={{header: ()=>null}}
-        />
-
-        <Stack.Screen
-        name = 'Error_Page'
-        component = {  ErrorPage }
-        options={{header: ()=>null}}
-        />
-
-        
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="LoggedInHome" component={LoggedInHome} />
       </Stack.Navigator>
-      </NavigationContainer>
-  )
-}
+    </NavigationContainer>
+    // <HomeScreen/>
+  );
+};
 
 export default App;

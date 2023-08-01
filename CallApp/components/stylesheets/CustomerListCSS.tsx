@@ -63,10 +63,11 @@ const style = StyleSheet.create({
 
     entry: { 
       backgroundColor: '#fff',
-      marginBottom: 30,
+      marginBottom: 10,
       width: 350,
-      height: 100,
+      // height: 100,
       paddingHorizontal: 15,
+      paddingVertical: 10,
       borderRadius: 8,
       shadowColor: '#000',
       shadowOffset: {
@@ -126,7 +127,6 @@ const style = StyleSheet.create({
     scrollView: {
       alignItems: 'center',
       justifyContent: 'center',
-      paddingBottom: 100
     },
     centeredView: {
       flex: 1,
