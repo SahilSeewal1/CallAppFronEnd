@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import  { AsyncStorage, Hub } from '@aws-amplify/core';
+import  Amplify, { AsyncStorage, Hub } from '@aws-amplify/core';
 import pkceChallenge from 'react-native-pkce-challenge';
-// import { CognitoJwtVerifier } from "aws-jwt-verify";
-
 
 const HomeScreen = () => {
   
     const navigation = useNavigation();
-    // const verifier = CognitoJwtVerifier.create({
-    //   userPoolId: "us-east-1_e4zL40p6N",
-    //   tokenUse: "access",
-    //   clientId: "19kungvqs1dmi2q335nfjgta7l",
-    // });
-
 
     useEffect(() => {
       const handleDeepLink = async (event) => {
 
         if (event.url && event.url.includes('?code=')) {
           const code = event.url.match(/code=([^&]*)/)[1];
+          const state = event.url.match(/state=([^&]*)/)[1];
           
           console.log("Authorization code ==>", code)
+          console.log("Authorization state ==>", state)
+
+
           const tokenUrl = `http://localhost:8080/api/tokenExchange?code=${code}`;
   
           const codeV = await AsyncStorage.getItem('code_verifier')
+          const originalState = await AsyncStorage.getItem('state')
+
           console.log("code V: ", codeV)
+          console.log("original state: ", originalState)
           try {
+
+            if(originalState != state)
+              throw new Error();
+
             const response = await fetch(tokenUrl, {
               method: 'POST',
               headers: {
@@ -41,25 +44,12 @@ const HomeScreen = () => {
             console.log("FE response ",response)
             if (response.ok) {
               const data = await response.json();
-              const { accessToken, idToken, refreshToken } = data;
-              console.log("accessToken", accessToken);
-              console.log("idToken", idToken);
-              console.log("refreshToken", refreshToken);
-
+              
+              const { accessToken } = data; // will get username as well
+              
               saveTokensToStorage('access_token', accessToken);
-              const accessT = await AsyncStorage.getItem('access_token')
+              const accessT = await AsyncStorage.getItem('access_token') // store username as well
               console.log("Access T: ", accessT)
-              // const jwksResponse = await fetch('https://cognito-idp.us-east-1.amazonaws.com/us-east-1_e4zL40p6N/.well-known/jwks.json')
-              //  console.log("jwks response ", jwksResponse) 
-              // try {
-              //     verifier.cacheJwks(jwksResponse.data)
-              //     const payload = await verifier.verify(
-              //     accessT // the JWT as string
-              //   );
-              //   console.log("Token is valid. Payload:", payload);
-              // } catch(e) {
-              //   console.log("Token not valid!", e);
-              // }
               
             } else {
               // Handle the error response from the backend
@@ -78,30 +68,7 @@ const HomeScreen = () => {
       return () => {
         linkUrl.remove();
       };
-    }, [])
-
-    useEffect(() => {
-      // Add a listener to handle deep links when the app is opened/resumed from the background
-      const handleDeepLink = async (event) => {
-      // Extract the deep link URL and parse the query parameters
-      const { url } = event;
-         
-      if (url && url.includes('success')) {
-              console.log(url);
-              navigation.navigate('LoggedInHome'); // Replace 'LoggedInHome' with the screen you want to navigate to after successful login
-              } else {
-                // Handle the error response from the backend
-                console.log('Token exchange failed');
-              }
-      }
-
-    const linkState = Linking.addEventListener('url', handleDeepLink);
-    // Clean up the event listener when the component unmounts
-    return () => {
-      linkState.remove(); 
-    };
-  }, []);
-
+    }, []);
 
    const saveTokensToStorage = async (type, item) => {
       try {
@@ -110,6 +77,8 @@ const HomeScreen = () => {
           await AsyncStorage.setItem(type, item);
         else if(type == 'access_token')
           await AsyncStorage.setItem(type, item);
+        else if(type == 'state')
+          await AsyncStorage.setItem(type, item);  
     } catch (error) {
        console.log('Error saving items:', error);
      }
@@ -135,7 +104,10 @@ const HomeScreen = () => {
     const codeVerifier = challenge.codeVerifier
     const codeChallenge = challenge.codeChallenge
 
+    
+
         saveTokensToStorage("code_verifier", codeVerifier);
+        saveTokensToStorage("state", state);
 
     console.log("code verifier is ", codeVerifier)
     console.log("code challenge  ", codeChallenge)

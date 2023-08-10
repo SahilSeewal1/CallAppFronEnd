@@ -7,10 +7,14 @@ import App from './components/App';
 import {name as appName} from './app.json';
 import { Provider } from 'react-redux';
 import store from './components/redux/store';
+import { CookiesProvider } from 'react-cookie';
+
 
 const AppRedux = () => (
     <Provider store={store}>
-        <App/>
+        <CookiesProvider>
+            <App/>
+        </CookiesProvider>
     </Provider>
 )
 
